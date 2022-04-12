@@ -17,7 +17,7 @@ public class ToDoList {
 
     private Date endDate;
 
-    @OneToMany(mappedBy = "todoList")
+    @OneToMany(mappedBy = "todoList", fetch = FetchType.LAZY)
     private List<ToDoItem> toDoItems;
 
     public Long getId() {
@@ -50,5 +50,13 @@ public class ToDoList {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public void addToDoItem(ToDoItem toDoItem) {
+        toDoItems.add(toDoItem);
+    }
+
+    public List<ToDoItem> getToDoItems() {
+        return toDoItems;
     }
 }
