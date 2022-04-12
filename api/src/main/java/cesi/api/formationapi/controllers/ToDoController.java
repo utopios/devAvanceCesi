@@ -1,6 +1,7 @@
 package cesi.api.formationapi.controllers;
 
 import cesi.api.formationapi.dtos.ToDoItemDTO;
+import cesi.api.formationapi.dtos.ToDoListDTO;
 import cesi.api.formationapi.models.ToDoItem;
 import cesi.api.formationapi.models.ToDoList;
 import cesi.api.formationapi.services.ToDoService;
@@ -8,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController()
@@ -24,8 +26,12 @@ public class ToDoController {
     }
 
     @GetMapping("")
-    public List<ToDoList> getTodoLists() {
-        return  _todoService.getTodoLists();
+    public List<ToDoListDTO> getTodoLists() {
+        List<ToDoListDTO> toDoListDTOS = new ArrayList<>();
+        _todoService.getTodoLists().forEach(t -> {
+            toDoListDTOS.add(modelMapper.map(t, ToDoListDTO.class));
+        });
+        return  toDoListDTOS;
     }
 
     @GetMapping("/filter/{title}")
@@ -34,14 +40,15 @@ public class ToDoController {
     }
 
     @GetMapping("{id}")
-    public ToDoList getTodoList(@PathVariable int id) {
-        return _todoService.getToDoList(id);
+    public ToDoListDTO getTodoList(@PathVariable int id) {
+        return  modelMapper.map(_todoService.getToDoList(id), ToDoListDTO.class);
     }
 
 
     @PostMapping("")
-    public ToDoList createTodoList(@RequestBody ToDoList toDoList) {
-        return _todoService.saveTodoList(toDoList);
+    public ToDoListDTO createTodoList(@RequestBody ToDoListDTO toDoListDTO) {
+        ToDoList toDoList = _todoService.saveTodoList(modelMapper.map(toDoListDTO, ToDoList.class));
+        return modelMapper.map(toDoList, ToDoListDTO.class);
     }
 
     @DeleteMapping("{id}")
