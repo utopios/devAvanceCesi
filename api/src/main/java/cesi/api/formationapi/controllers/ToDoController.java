@@ -1,8 +1,10 @@
 package cesi.api.formationapi.controllers;
 
+import cesi.api.formationapi.dtos.ToDoItemDTO;
 import cesi.api.formationapi.models.ToDoItem;
 import cesi.api.formationapi.models.ToDoList;
 import cesi.api.formationapi.services.ToDoService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,13 @@ public class ToDoController {
 
     @Autowired
     private ToDoService _todoService;
+
+    private ModelMapper modelMapper;
+
+    public ToDoController() {
+        modelMapper = new ModelMapper();
+    }
+
     @GetMapping("")
     public List<ToDoList> getTodoLists() {
         return  _todoService.getTodoLists();
@@ -46,8 +55,12 @@ public class ToDoController {
     }
 
     @PostMapping("{todoListId}/todoitems")
-    public ToDoItem createTodoItem(@PathVariable int todoListId, @RequestBody ToDoItem toDoItem) {
-        return _todoService.saveTodoItem(todoListId, toDoItem);
+    public ToDoItemDTO createTodoItem(@PathVariable int todoListId, @RequestBody ToDoItemDTO toDoItemDTO) {
+        /*ToDoItem toDoItem = new ToDoItem();
+        toDoItem.setTaskName(toDoItemDTO.getTaskName());*/
+        ToDoItem toDoItem = modelMapper.map(toDoItemDTO, ToDoItem.class);
+        _todoService.saveTodoItem(todoListId, toDoItem);
+        return modelMapper.map(toDoItem, ToDoItemDTO.class);
     }
 
     @GetMapping("{todoListId}/todoitems/{todoItemId}")
