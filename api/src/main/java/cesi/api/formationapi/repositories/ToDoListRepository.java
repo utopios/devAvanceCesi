@@ -1,4 +1,8 @@
 package cesi.api.formationapi.repositories;
 
-public interface ToDoListRepository {
+import cesi.api.formationapi.models.ToDoList;
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface ToDoListRepository extends CrudRepository<ToDoList, Long> {
 }
