@@ -9,28 +9,28 @@ import java.util.List;
 @RequestMapping("todolists")
 public class ToDoController {
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<ToDoList> getTodoLists() {
         return null;
     }
 
-    @GetMapping("/{title}")
+    @GetMapping("/filter/{title}")
     public List<ToDoList> searchTodoList(@PathVariable String title) {
         return null;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ToDoList getTodoList(@PathVariable int id) {
         return null;
     }
 
 
-    @PostMapping("/")
+    @PostMapping("")
     public ToDoList CreateTodoList(@RequestBody ToDoList toDoList) {
         return null;
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public boolean DeleteTodoList(@PathVariable int id) {
         return false;
     }
