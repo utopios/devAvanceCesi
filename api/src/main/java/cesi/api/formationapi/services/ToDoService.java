@@ -5,12 +5,13 @@ import cesi.api.formationapi.models.ToDoList;
 import cesi.api.formationapi.repositories.ToDoItemRepository;
 import cesi.api.formationapi.repositories.ToDoListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Transactional
+@Service
 public class ToDoService {
 
     @Autowired
@@ -27,6 +28,8 @@ public class ToDoService {
     public ToDoItem saveTodoItem(int todoListId, ToDoItem toDoItem) {
         ToDoList toDoList = getToDoList(todoListId);
         toDoList.addToDoItem(toDoItem);
+        toDoItem.setToDoList(toDoList);
+        _todoItemRepository.save(toDoItem);
         _toDoListRepository.save(toDoList);
         return toDoItem;
     }

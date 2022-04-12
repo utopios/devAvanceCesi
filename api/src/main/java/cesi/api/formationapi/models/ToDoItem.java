@@ -4,12 +4,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "todoitem")
 public class ToDoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "taskname")
     private String taskName;
 
     private boolean done;
@@ -42,5 +44,7 @@ public class ToDoItem {
         this.done = done;
     }
 
-
+    public void setToDoList(ToDoList toDoList) {
+        this.toDoList = toDoList;
+    }
 }

@@ -1,10 +1,12 @@
 package cesi.api.formationapi.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
+@Entity()
+@Table(name = "todolist")
 public class ToDoList {
 
     @Id
@@ -15,10 +17,15 @@ public class ToDoList {
 
     private boolean complete;
 
+    @Column(name = "enddate")
     private Date endDate;
 
-    @OneToMany(mappedBy = "todoList", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "toDoList", fetch = FetchType.LAZY)
     private List<ToDoItem> toDoItems;
+
+    public ToDoList() {
+        toDoItems = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;
