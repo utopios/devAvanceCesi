@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class JwtUserService  implements UserDetailsService {
 
         //Cette méthode permet de vérfier si l'utilisateur exite dans nos base de données et renvoyer l'utlisateur avec le mot de passe
         if("ihab".equals(username)) {
-            return new User("ihab", "mot de passe", new ArrayList<>());
+            return new User("ihab", new BCryptPasswordEncoder().encode("test"), new ArrayList<>());
         }
         else {
             throw new UsernameNotFoundException("User not found");
