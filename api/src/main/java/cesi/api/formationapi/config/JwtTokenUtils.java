@@ -23,24 +23,24 @@ public class JwtTokenUtils {
     //créer le token
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, String> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         claims.put("name", userDetails.getUsername());
         return createToken(claims, userDetails.getUsername());
     }
 
-    private String createToken(Map<String, String> claims, String subject) {
+    private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_LIMIT * 3600000))
-                .signWith(SignatureAlgorithm.RS512, secret)
+                .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }
 
     //Récupérer les informations dans le token.
     public Claims getAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
     public String getUserNameFromToken(String token) {
