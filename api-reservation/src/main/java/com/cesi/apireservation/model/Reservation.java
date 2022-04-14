@@ -15,7 +15,7 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private AppUser user;
+    private UserApp user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concert_id")
@@ -37,11 +37,11 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-    public AppUser getUser() {
+    public UserApp getUser() {
         return user;
     }
 
-    public void setUser(AppUser user) {
+    public void setUser(UserApp user) {
         this.user = user;
     }
 

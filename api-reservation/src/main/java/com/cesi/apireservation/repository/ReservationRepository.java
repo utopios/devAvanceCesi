@@ -1,4 +1,7 @@
 package com.cesi.apireservation.repository;
 
-public interface ReservationRepository {
+import com.cesi.apireservation.model.Reservation;
+import org.springframework.data.repository.CrudRepository;
+
+public interface ReservationRepository extends CrudRepository<Reservation, Long> {
 }

@@ -1,4 +1,7 @@
 package com.cesi.apireservation.repository;
 
-public interface UserAppRepository {
+import com.cesi.apireservation.model.UserApp;
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserAppRepository extends CrudRepository<UserApp, Long> {
 }
