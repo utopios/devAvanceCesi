@@ -54,8 +54,3 @@ public class Reservation {
     }
 }
 
-enum ReservationStatus {
-    pending,
-    valid,
-    cancel
-}
