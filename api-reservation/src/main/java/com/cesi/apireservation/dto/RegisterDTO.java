@@ -1,20 +1,10 @@
 package com.cesi.apireservation.dto;
 
-public class UserDTO {
-
-    private int id;
+public class RegisterDTO {
     private String email;
     private String phone;
     private String username;
-    private boolean isAdmin;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private String password;
 
     public String getEmail() {
         return email;
@@ -38,5 +28,13 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
