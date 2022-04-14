@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReservationService {
@@ -58,5 +60,43 @@ public class ReservationService {
 
     //Méthode pour récupérer les réservations
 
+    public List<ReservationDTO> getAll() throws Exception {
+        List<ReservationDTO> reservations= new ArrayList<>();
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication();
+        UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
+        if(userApp == null) {
+            throw new Exception("user not found");
+        }
+        if(userApp.isAdmin()) {
+            reservationRepository.findAll().forEach(r -> {
+                reservations.add(modelMapper.map(r, ReservationDTO.class));
+            });
+        }else {
+            reservationRepository.findAllByUser(userApp).forEach(r -> {
+                reservations.add(modelMapper.map(r, ReservationDTO.class));
+            });
+        }
+        return reservations;
+    }
+
     //Méthode pour mettre à jour le status (uniqument pour l'admin)
+    public void updateReservation(Long reservationId, ReservationStatus status) throws Exception {
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication();
+        UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
+        if(userApp == null) {
+            throw new Exception("user not found");
+        }
+        if(userApp.isAdmin()) {
+            Reservation reservation = reservationRepository.findById(reservationId).get();
+            if(reservation == null) {
+                throw  new Exception("Error when reservation added to database");
+            }
+            reservation.setReservationStatus(status);
+            reservationRepository.save(reservation);
+        }
+        else {
+            throw new Exception("Not allowed exception");
+        }
+    }
+
 }
