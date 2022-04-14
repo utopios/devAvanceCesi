@@ -4,6 +4,7 @@ import com.cesi.apireservation.dto.RegisterDTO;
 import com.cesi.apireservation.dto.UserDTO;
 import com.cesi.apireservation.model.UserApp;
 import com.cesi.apireservation.repository.UserAppRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,6 +22,11 @@ public class UserAppService implements UserDetailsService {
     @Autowired
     private UserAppRepository userAppRepository;
 
+    private ModelMapper modelMapper;
+
+    public UserAppService() {
+        modelMapper = new ModelMapper();
+    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserApp userApp = userAppRepository.findUserAppByUsername(username);
@@ -30,7 +36,12 @@ public class UserAppService implements UserDetailsService {
         return new User(username, userApp.getPassword(), new ArrayList<>());
     }
 
-    public UserDTO regisetUser(RegisterDTO registerDTO) {
-        return null;
+    public UserDTO regisetUser(RegisterDTO registerDTO) throws Exception {
+        //Vérification sur les champs, email, téléphone, ....
+        UserApp userApp = userAppRepository.save(modelMapper.map(registerDTO, UserApp.class));
+        if(userApp == null) {
+            throw new Exception("error adding user to database");
+        }
+        return modelMapper.map(userApp, UserDTO.class);
     }
 }
