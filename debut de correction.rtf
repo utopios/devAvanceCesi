@@ -1,0 +1,33 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Ressource:\
+\
+- Utilisateur, Concert, reservations, \
+\
+- utilisateur : id, username, password, email, telephone, isAdmin\
+\
+- concert: id, date, title, nombre_place_max.\
+\
+- reservation: id, user_id, concert_id, nombre_place, status\
+\
+EndPoint:\
+\
+Non prot\'e9g\'e9:\
+GET /authenticate\
+GET /register\
+GET /concert\
+\
+Prot\'e9g\'e9\
+POST /concert/\{id\}/reservation\
+\
+PATCH /concert/\{id\}/reservation/\{reservation_id\}\
+\
+GET /concert/\{id\}/reservation\
+\
+GET /concert/\{id\}/reservation/\{reservation_id\}\
+}
