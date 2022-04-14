@@ -39,4 +39,12 @@ public class UserDTO {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 }

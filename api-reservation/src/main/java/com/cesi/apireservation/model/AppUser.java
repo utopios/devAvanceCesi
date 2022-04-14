@@ -64,4 +64,5 @@ public class AppUser {
     public void AddReservation(Reservation reservation) {
         reservations.add(reservation);
     }
+
 }
