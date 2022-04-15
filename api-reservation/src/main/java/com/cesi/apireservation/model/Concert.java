@@ -2,6 +2,7 @@ package com.cesi.apireservation.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,16 +11,22 @@ public class Concert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String title;
 
     private Date date;
 
+    @Column(name = "place_max")
     private int placeMax;
 
     @OneToMany(mappedBy = "concert")
     private Set<Reservation> reservations;
+
+    public Concert() {
+        reservations = new HashSet<>();
+    }
+
     public String getTitle() {
         return title;
     }

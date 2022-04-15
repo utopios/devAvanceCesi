@@ -10,6 +10,7 @@ import com.cesi.apireservation.repository.ReservationRepository;
 import com.cesi.apireservation.repository.UserAppRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class ReservationService {
     public ReservationDTO save(ReservationDTO reservationDTO, Long concertId) throws Exception {
         Reservation reservation = modelMapper.map(reservationDTO, Reservation.class);
         reservation.setReservationStatus(ReservationStatus.pending);
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) ((UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
         UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
         if(userApp == null) {
             throw new Exception("user not found");
@@ -62,7 +63,7 @@ public class ReservationService {
 
     public List<ReservationDTO> getAll() throws Exception {
         List<ReservationDTO> reservations= new ArrayList<>();
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) ((UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
         UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
         if(userApp == null) {
             throw new Exception("user not found");
@@ -81,7 +82,7 @@ public class ReservationService {
 
     //Méthode pour mettre à jour le status (uniqument pour l'admin)
     public void updateReservation(Long reservationId, ReservationStatus status) throws Exception {
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) ((UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
         UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
         if(userApp == null) {
             throw new Exception("user not found");

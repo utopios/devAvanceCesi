@@ -1,16 +1,21 @@
 package com.cesi.apireservation.model;
 
+import com.cesi.apireservation.dto.ReservationDTO;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "reservation_concert")
 public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
+    @Column(name = "nb_place")
     private int nbPlace;
 
+    @Column(name = "reservation_status")
     private ReservationStatus reservationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -20,6 +25,10 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concert_id")
     private Concert concert;
+
+    public Reservation() {
+
+    }
 
     public int getNbPlace() {
         return nbPlace;
@@ -51,6 +60,14 @@ public class Reservation {
 
     public void setConcert(Concert concert) {
         this.concert = concert;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
 

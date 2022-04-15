@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,7 +39,10 @@ public class UserAppService implements UserDetailsService {
 
     public UserDTO regiserUser(RegisterDTO registerDTO) throws Exception {
         //Vérification sur les champs, email, téléphone, ....
-        UserApp userApp = userAppRepository.save(modelMapper.map(registerDTO, UserApp.class));
+
+        UserApp userApp = modelMapper.map(registerDTO, UserApp.class);
+        userApp.setPassword(new BCryptPasswordEncoder().encode(userApp.getPassword()));
+        userApp = userAppRepository.save(userApp);
         if(userApp == null) {
             throw new Exception("error adding user to database");
         }
