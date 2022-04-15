@@ -46,7 +46,7 @@ public class UserAppController {
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
         try {
-            UserDTO userDTO = userAppService.regisetUser(registerDTO);
+            UserDTO userDTO = userAppService.regiserUser(registerDTO);
             return ResponseEntity.ok(userDTO);
         }catch (Exception ex) {
             return ResponseEntity.status(500).body(ex.getMessage());

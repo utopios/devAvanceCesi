@@ -36,7 +36,7 @@ public class UserAppService implements UserDetailsService {
         return new User(username, userApp.getPassword(), new ArrayList<>());
     }
 
-    public UserDTO regisetUser(RegisterDTO registerDTO) throws Exception {
+    public UserDTO regiserUser(RegisterDTO registerDTO) throws Exception {
         //Vérification sur les champs, email, téléphone, ....
         UserApp userApp = userAppRepository.save(modelMapper.map(registerDTO, UserApp.class));
         if(userApp == null) {
