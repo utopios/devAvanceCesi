@@ -54,6 +54,8 @@ public class ReservationService {
         reservation = reservationRepository.save(reservation);
         if(reservation == null) {
             throw  new Exception("Error when reservation added to database");
+            //Ajouter les logs : La méthode, l'heure, les arguments, context
+            //Un service de log
         }
         return modelMapper.map(reservation, ReservationDTO.class);
     }

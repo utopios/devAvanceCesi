@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         //Vérification sécurité http
-         http.cors().and().authorizeRequests().antMatchers("/login/**").permitAll().anyRequest().authenticated().and().exceptionHandling()
+         http.cors().and().authorizeRequests().antMatchers("/login/**", "/todolists").permitAll().anyRequest().authenticated().and().exceptionHandling()
                  .authenticationEntryPoint(new AuthenticationEntryPoint() {
              @Override
              public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
