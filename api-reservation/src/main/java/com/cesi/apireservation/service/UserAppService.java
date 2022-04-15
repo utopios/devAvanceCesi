@@ -1,12 +1,15 @@
 package com.cesi.apireservation.service;
 
+import com.cesi.apireservation.config.PasswordEncoder;
 import com.cesi.apireservation.dto.RegisterDTO;
 import com.cesi.apireservation.dto.UserDTO;
 import com.cesi.apireservation.model.UserApp;
 import com.cesi.apireservation.repository.UserAppRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +25,9 @@ public class UserAppService implements UserDetailsService {
 
     @Autowired
     private UserAppRepository userAppRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private ModelMapper modelMapper;
 
@@ -41,11 +47,20 @@ public class UserAppService implements UserDetailsService {
         //Vérification sur les champs, email, téléphone, ....
 
         UserApp userApp = modelMapper.map(registerDTO, UserApp.class);
-        userApp.setPassword(new BCryptPasswordEncoder().encode(userApp.getPassword()));
+        userApp.setPassword(passwordEncoder.encoder().encode(userApp.getPassword()));
         userApp = userAppRepository.save(userApp);
         if(userApp == null) {
             throw new Exception("error adding user to database");
         }
         return modelMapper.map(userApp, UserDTO.class);
+    }
+
+    public UserApp getUserFromToken() throws Exception {
+        UserDetails userDetails = (UserDetails) ((UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
+        UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
+        if(userApp == null) {
+            throw new Exception("user not found");
+        }
+        return userApp;
     }
 }

@@ -31,6 +31,9 @@ public class ReservationService {
     @Autowired
     private UserAppRepository userAppRepository;
 
+    @Autowired
+    private UserAppService userAppService;
+
     private ModelMapper modelMapper;
 
     public ReservationService() {
@@ -41,11 +44,7 @@ public class ReservationService {
     public ReservationDTO save(ReservationDTO reservationDTO, Long concertId) throws Exception {
         Reservation reservation = modelMapper.map(reservationDTO, Reservation.class);
         reservation.setReservationStatus(ReservationStatus.pending);
-        UserDetails userDetails = (UserDetails) ((UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
-        UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
-        if(userApp == null) {
-            throw new Exception("user not found");
-        }
+        UserApp userApp = userAppService.getUserFromToken();
         reservation.setUser(userApp);
         Concert concert = concertRepository.findById(concertId).get();
         if(concert == null) {
@@ -63,11 +62,7 @@ public class ReservationService {
 
     public List<ReservationDTO> getAll() throws Exception {
         List<ReservationDTO> reservations= new ArrayList<>();
-        UserDetails userDetails = (UserDetails) ((UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
-        UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
-        if(userApp == null) {
-            throw new Exception("user not found");
-        }
+        UserApp userApp = userAppService.getUserFromToken();
         if(userApp.isAdmin()) {
             reservationRepository.findAll().forEach(r -> {
                 reservations.add(modelMapper.map(r, ReservationDTO.class));
@@ -82,11 +77,7 @@ public class ReservationService {
 
     //Méthode pour mettre à jour le status (uniqument pour l'admin)
     public void updateReservation(Long reservationId, ReservationStatus status) throws Exception {
-        UserDetails userDetails = (UserDetails) ((UsernamePasswordAuthenticationToken)SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
-        UserApp userApp = userAppRepository.findUserAppByUsername(userDetails.getUsername());
-        if(userApp == null) {
-            throw new Exception("user not found");
-        }
+        UserApp userApp = userAppService.getUserFromToken();
         if(userApp.isAdmin()) {
             Reservation reservation = reservationRepository.findById(reservationId).get();
             if(reservation == null) {
