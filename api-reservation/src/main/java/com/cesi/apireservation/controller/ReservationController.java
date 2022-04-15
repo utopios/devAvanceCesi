@@ -37,9 +37,9 @@ public class ReservationController {
     }
 
     @PatchMapping("{reservationId}/status/{status}")
-    public ResponseEntity<?> updateReservationStatus(@PathVariable Long reservationId, @PathVariable ReservationStatus status) {
+    public ResponseEntity<?> updateReservationStatus(@PathVariable Long reservationId, @PathVariable String status) {
         try {
-            reservationService.updateReservation(reservationId, status);
+            reservationService.updateReservationAdmin(reservationId, ReservationStatus.valueOf(status));
             return ResponseEntity.ok("update Ok");
         }catch (Exception ex) {
             return ResponseEntity.status(500).body(ex.getMessage());

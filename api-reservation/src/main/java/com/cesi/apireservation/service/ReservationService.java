@@ -78,9 +78,9 @@ public class ReservationService {
     }
 
     //Méthode pour mettre à jour le status (uniqument pour l'admin)
-    public void updateReservation(Long reservationId, ReservationStatus status) throws Exception {
+    public void updateReservationAdmin(Long reservationId, ReservationStatus status) throws Exception {
         UserApp userApp = userAppService.getUserFromToken();
-        if(userApp.isAdmin()) {
+        /*if(userApp.isAdmin()) {
             Reservation reservation = reservationRepository.findById(reservationId).get();
             if(reservation == null) {
                 throw  new Exception("Error when reservation added to database");
@@ -90,7 +90,13 @@ public class ReservationService {
         }
         else {
             throw new Exception("Not allowed exception");
+        }*/
+        Reservation reservation = reservationRepository.findById(reservationId).get();
+        if(reservation == null) {
+            throw  new Exception("Error when reservation added to database");
         }
+        reservation.setReservationStatus(status);
+        reservationRepository.save(reservation);
     }
 
 }
